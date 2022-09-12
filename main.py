@@ -181,7 +181,6 @@ def draw(split, loss_dict, axs, epoch, color):
 
 
 def draw_stats(axes, stats, epoch, colordict):
-
     for k, v in stats.items():
         if len(epoch) == 1:
             axes.plot(v, color=colordict[k], label=k)
@@ -374,13 +373,13 @@ def main(args):
 
         for key, value in train_loss_dict.items():
             if key in [
-                    'loss_ce', 'loss_bbox', 'loss_giou', 'cardinality_error',
-                    'class_error', 'loss_iou'
+                'loss_ce', 'loss_bbox', 'loss_giou', 'cardinality_error',
+                'class_error', 'loss_iou'
             ]:
                 try:
-                    train_loss_list[key].append(value.mean())
+                    train_loss_list[key].append(value.mean().detach().cpu())
                 except KeyError:
-                    train_loss_list[key] = [value.mean()]
+                    train_loss_list[key] = [value.mean().detach().cpu()]
 
         lr_scheduler.step()
         if epoch % 50 == 0 and args.output_dir:
@@ -423,13 +422,13 @@ def main(args):
 
         for key, value in eval_loss_dict.items():
             if key in [
-                    'loss_ce', 'loss_bbox', 'loss_giou', 'cardinality_error',
-                    'class_error', 'loss_iou'
+                'loss_ce', 'loss_bbox', 'loss_giou', 'cardinality_error',
+                'class_error', 'loss_iou'
             ]:
                 try:
-                    eval_loss_list[key].append(value.mean())
+                    eval_loss_list[key].append(value.mean().detach().cpu())
                 except KeyError:
-                    eval_loss_list[key] = [value.mean()]
+                    eval_loss_list[key] = [value.mean().detach().cpu()]
 
         print('test_stats', test_stats)
 
