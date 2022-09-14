@@ -91,6 +91,9 @@ class RTD(nn.Module):
                 'aux_outputs': Optional, only returned when auxilary losses are activated. It is a list of
                     dictionaries containing the two above keys for each decoder layer.
         """
+        # locations.shape = torch.Size([32, 100, 1])
+        # samples.shape = torch.Size([32, 100, 2048])
+        # s_e_scores.shape = torch.Size([32, 100, 2])
         bs = s_e_scores.shape[0]
 
         # boundary-attentive representations
@@ -104,6 +107,7 @@ class RTD(nn.Module):
         features_s = torch.mul(projected_fts, s.unsqueeze(-1))
         features_e = torch.mul(projected_fts, e.unsqueeze(-1))
         features = torch.cat((features_s, features_e), dim=2)
+        # 将feature做点乘，再cat到一起
 
         pos = self.position_embedding(locations)
 
