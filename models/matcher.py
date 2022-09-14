@@ -36,6 +36,7 @@ class HungarianMatcher(nn.Module):
             than the threshold are marked as positive samples.
         relax_topk (int): Number of top predictions be relaxed. Default: 1.
     """
+
     def __init__(self,
                  cost_class,
                  cost_bbox,
@@ -83,6 +84,7 @@ class HungarianMatcher(nn.Module):
         """
 
         bs, num_queries = outputs['pred_logits'].shape[:2]
+        # outputs['pred_logits'].shape = [batch_size, num_queries, num_classes]
 
         # We flatten to compute the cost matrices in a batch
         out_prob = outputs['pred_logits'].flatten(0, 1).softmax(
